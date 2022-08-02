@@ -1,5 +1,6 @@
-import { FlexBox, Link } from "@animus-ui/components";
+import { FlexBox, Link, Text } from "@animus-ui/components";
 import type { NextPage } from "next";
+import { useEffect, useRef } from "react";
 
 const data = {
   date: "dawn of time",
@@ -24,11 +25,28 @@ const testConfirm = () =>
     });
 
 const Home: NextPage = () => {
+  const iframeRef = useRef<HTMLIFrameElement>();
+
+  useEffect(() => {
+    const getDemoUrl = () =>
+      fetch("/api/generate/demo", {
+        method: "POST",
+        body: JSON.stringify({}),
+      })
+        .then((response) => response.blob())
+        .then((blob) => {
+          iframeRef.current?.setAttribute(
+            "src",
+            window.URL.createObjectURL(blob)
+          );
+        });
+    getDemoUrl();
+  }, [iframeRef]);
+
   return (
-    <FlexBox height="100vh" center>
-      <Link as="a" href="/#" p={12} onClick={testConfirm} fontSize={22}>
-        Create confirm
-      </Link>
+    <FlexBox height="100vh" center column>
+      <Text as="h3">Preview</Text>
+      <iframe style={{ height: "100%", width: "100%" }} ref={iframeRef} />
     </FlexBox>
   );
 };

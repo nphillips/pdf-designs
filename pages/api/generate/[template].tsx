@@ -6,7 +6,10 @@ import React, { ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import pdf from "html-pdf";
 
+
+import demo from "../../../templates/demo.mdx";
 import confirm from "../../../templates/confirm.mdx";
+
 import { MDXProvider } from "@mdx-js/react";
 import {
   AnimusProvider,
@@ -23,6 +26,7 @@ import { compatTheme } from "@animus-ui/core";
 
 const TEMPLATES = {
   confirm,
+  demo,
 };
 
 const options = {
