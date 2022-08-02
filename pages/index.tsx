@@ -25,7 +25,7 @@ const testConfirm = () =>
     });
 
 const Home: NextPage = () => {
-  const iframeRef = useRef<HTMLIFrameElement>();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const getDemoUrl = () =>

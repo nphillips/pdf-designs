@@ -6,23 +6,10 @@ import React, { ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import pdf from "html-pdf";
 
-
 import demo from "../../../templates/demo.mdx";
 import confirm from "../../../templates/confirm.mdx";
 
-import { MDXProvider } from "@mdx-js/react";
-import {
-  AnimusProvider,
-  Text,
-  Box,
-  FlexBox,
-  GridBox,
-  Li,
-  Link,
-  Ol,
-  Ul,
-} from "@animus-ui/components";
-import { compatTheme } from "@animus-ui/core";
+import { MDXWrapper } from "../../../components/MDX";
 
 const TEMPLATES = {
   confirm,
@@ -39,8 +26,6 @@ const options = {
   type: "pdf",
   timeout: 30000,
 } as const;
-
-const Provider = AnimusProvider as any;
 
 const componentToPDFBuffer = (component: ReactElement) => {
   return new Promise((resolve, reject) => {
@@ -80,25 +65,9 @@ export default async function handler(
   // output the pdf buffer
   res.end(
     await componentToPDFBuffer(
-      <Provider theme={compatTheme}>
-        <MDXProvider
-          components={{
-            h1: (props) => <Text as="h1" {...props} />,
-            h2: (props) => <Text as="h2" {...props} />,
-            h3: (props) => <Text as="h3" {...props} />,
-            h4: (props) => <Text as="h4" {...props} />,
-            h5: (props) => <Text as="h5" {...props} />,
-            h6: (props) => <Text as="h6" {...props} />,
-            li: Li,
-            a: Link,
-            ol: Ol,
-            ul: Ul,
-            p: Text,
-          }}
-        >
-          <TemplateComponent data={data} date={date} account={account} />
-        </MDXProvider>
-      </Provider>
+      <MDXWrapper>
+        <TemplateComponent data={data} date={date} account={account} />
+      </MDXWrapper>
     )
   );
 }
